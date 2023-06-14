@@ -52,18 +52,6 @@ public class Deck : NetworkBehaviour
             cards.Set(j, temp);
         }
     }
-    //public void DivideCards(List<Player> players)
-    //{
-
-    //    for (int i = 0; i < 52 && 52 - i >= players.Count;)
-    //    {
-    //        foreach (Player player in players)
-    //        {
-    //            player.RPC_AddCard(cards[i]);
-    //            i++;
-    //        }
-    //    }
-    //}
     public void DivideCards(int totalNumberOfPlayers)
     {
         if (mainGame == null) mainGame = FindObjectOfType<MainGame>();
