@@ -99,6 +99,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
                     {
                         if (SinglePlayerLeft())
                         {
+                            SetNextPlayer();
                             PlayerWonMatch();
                         }
                         else
@@ -119,7 +120,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
                 {
                     if (SinglePlayerLeft())
                     {
-                        Debug.Log("WON MATCH");
+                        SetNextPlayer();
                         PlayerWonMatch();
                     }
                     else
