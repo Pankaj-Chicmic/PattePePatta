@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayersData : MonoBehaviour
 {
-    public List<string> playerNames=new List<string>();
-    public int numberOfPlayers;
+    [HideInInspector]public string playerName;
     private void Start()
     {
         DontDestroyOnLoad(gameObject);

@@ -1,22 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Fusion;
 public enum TypeOfCard
 {
     Club,
-    Diamonds,
-    Hearts,
+    Diamond,
+    Heart,
     Spade
 }
-public class Card 
+public struct Card : INetworkStruct
 {
     public int number;
-    public Sprite sprite;
     public TypeOfCard typeOfCard;
-    public Card(int number,Sprite sprite, TypeOfCard typeOfCard)
+    public Card(int number,TypeOfCard typeOfCard)
     {
         this.number = number;
-        this.sprite = sprite;
         this.typeOfCard = typeOfCard;
     }
     public bool CheckEquals(Card card)

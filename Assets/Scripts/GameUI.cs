@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Fusion;
 public class GameUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI roundWonByText;
     [SerializeField] private TextMeshProUGUI countOfCardsOnTableText;
+    [SerializeField] private List<PlayerPanel> playerPanels;
     [SerializeField] private List<Image> images;
     public void SetImage(Sprite sprite)
     {
@@ -56,5 +58,9 @@ public class GameUI : MonoBehaviour
     private void Update()
     {
         if (Input.GetKey(KeyCode.Escape)) LoadMainMenu();
+    }
+    public PlayerPanel GetPlayerPanel(PlayerRef playerInstance)
+    {
+        return playerPanels[playerInstance];
     }
 }
