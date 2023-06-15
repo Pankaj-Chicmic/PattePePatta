@@ -1661,6 +1661,7 @@ MonoBehaviour:
   rankText: {fileID: 1821089090}
   PlaceButton: {fileID: 2015664706}
   cardBack: {fileID: 1932047091}
+  player: {fileID: 0}
 --- !u!1 &769302389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,6 +1762,7 @@ MonoBehaviour:
   rankText: {fileID: 425886005}
   PlaceButton: {fileID: 1494369883}
   cardBack: {fileID: 863946637}
+  player: {fileID: 0}
 --- !u!1 &794929923
 GameObject:
   m_ObjectHideFlags: 0
@@ -3140,7 +3142,8 @@ GameObject:
   - component: {fileID: 1181046420}
   - component: {fileID: 1181046421}
   - component: {fileID: 1181046422}
-  - component: {fileID: 1181046423}
+  - component: {fileID: 1181046424}
+  - component: {fileID: 1181046425}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -3175,15 +3178,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5c5b08cf91ee149992c163bda57ad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameUI: {fileID: 1181046423}
+  _interpolationDataSource: 0
   deck: {fileID: 1181046422}
-  playerPrefab: {fileID: 5465453439872585338, guid: 9aca6e3681db36e4eb64c4c5a9e08d01, type: 3}
-  playerPanels:
-  - {fileID: 769302393}
-  - {fileID: 1882792091}
-  - {fileID: 734654728}
-  - {fileID: 1989451965}
-  numberOfPlayer: 0
+  _playersInstances: []
+  _player0CardsNumber: 0
+  _player1CardsNumber: 0
+  _player2CardsNumber: 0
+  _player3CardsNumber: 0
+  _nextPlayerIndex: 0
+  _totalPlayerNumber: 0
+  _remainingPlayers: 0
+  _cardsOntableNumber: 0
 --- !u!114 &1181046422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3196,7 +3201,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b814ed4391c9fe44f8a679bd095e9ea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1181046423
+  _interpolationDataSource: 0
+--- !u!114 &1181046424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3205,21 +3211,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 1181046419}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69aaf77f24a40c349bf5d78e50a88fbd, type: 3}
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roundWonByText: {fileID: 830753622}
-  countOfCardsOnTableText: {fileID: 1161405290}
-  images:
-  - {fileID: 613007271}
-  - {fileID: 496706876}
-  - {fileID: 1612013303}
-  - {fileID: 1469967620}
-  - {fileID: 1657904192}
-  - {fileID: 158794254}
-  - {fileID: 144288067}
-  - {fileID: 651469519}
-  - {fileID: 243308993}
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2561
+  NetworkGuid:
+    RawGuidValue: a667b4823032432e99b2a50cd7492464
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1181046421}
+  - {fileID: 1181046422}
+  - {fileID: 1181046425}
+  SimulationBehaviours: []
+--- !u!114 &1181046425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181046419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc816fb1d21aa64b845a429b41ce5f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  playerPrefab: {fileID: 2634896406387116035, guid: 9aca6e3681db36e4eb64c4c5a9e08d01, type: 3}
+  _gameState: 0
 --- !u!1 &1248301385
 GameObject:
   m_ObjectHideFlags: 0
@@ -4501,6 +4524,7 @@ MonoBehaviour:
   rankText: {fileID: 343336933}
   PlaceButton: {fileID: 1051537237}
   cardBack: {fileID: 1158539865}
+  player: {fileID: 0}
 --- !u!1 &1894045578
 GameObject:
   m_ObjectHideFlags: 0
@@ -4947,6 +4971,7 @@ MonoBehaviour:
   rankText: {fileID: 794929925}
   PlaceButton: {fileID: 969387916}
   cardBack: {fileID: 1299482220}
+  player: {fileID: 0}
 --- !u!1 &2011398946
 GameObject:
   m_ObjectHideFlags: 0
@@ -5227,6 +5252,7 @@ GameObject:
   - component: {fileID: 2052626419}
   - component: {fileID: 2052626421}
   - component: {fileID: 2052626420}
+  - component: {fileID: 2052626422}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -5297,6 +5323,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052626418}
   m_CullTransparentMesh: 1
+--- !u!114 &2052626422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052626418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aaf77f24a40c349bf5d78e50a88fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roundWonByText: {fileID: 830753622}
+  countOfCardsOnTableText: {fileID: 1161405290}
+  playerPanels:
+  - {fileID: 769302393}
+  - {fileID: 1882792091}
+  - {fileID: 734654728}
+  - {fileID: 1989451965}
+  images:
+  - {fileID: 613007271}
+  - {fileID: 496706876}
+  - {fileID: 1612013303}
+  - {fileID: 1469967620}
+  - {fileID: 1657904192}
+  - {fileID: 158794254}
+  - {fileID: 144288067}
+  - {fileID: 651469519}
+  - {fileID: 243308993}
 --- !u!1 &2101816176
 GameObject:
   m_ObjectHideFlags: 0

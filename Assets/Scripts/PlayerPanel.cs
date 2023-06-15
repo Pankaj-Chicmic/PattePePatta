@@ -11,6 +11,11 @@ public class PlayerPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI  rankText;
     [SerializeField] private Button PlaceButton;
     [SerializeField] private Image cardBack;
+    public Player player;
+    private void Start()
+    {
+        PlaceButton.onClick.AddListener(PlaceButtonClicked);
+    }
     public void SetName(string playerName)
     {
         nameText.text = playerName.ToString();
@@ -35,5 +40,13 @@ public class PlayerPanel : MonoBehaviour
     public void SetCardBackActive(bool status)
     {
         cardBack.gameObject.SetActive(status);
+    }
+    public void SetPlaceButtonIntractable()
+    {
+        PlaceButton.interactable = true;
+    }
+    private void PlaceButtonClicked()
+    {
+        player.PlacedClicked();
     }
 }

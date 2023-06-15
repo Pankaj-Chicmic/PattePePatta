@@ -1,71 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Player : MonoBehaviour
+using Fusion;
+public class Player : NetworkBehaviour
 {
-    private List<Card> cards;
-    private string playerName;
+    [Networked(OnChanged = nameof(OnPlayerNameChanged))] public string playerName { get; set; }
+    //[Networked] public int lastCardIndex { get; set; }
     private PlayerPanel playerPanel;
-    public void SetPlayer(string playerName,PlayerPanel playerPanel)
+    public override void Spawned()
     {
-        this.cards = new List<Card>();
-        this.playerName = playerName;
-        this.playerPanel = playerPanel;
-        this.playerPanel.SetName(playerName);
-        this.playerPanel.gameObject.SetActive(true);
-    }
-    public void AddCard(Card card)
-    {
-        cards.Add(card);
-        playerPanel.ChangeNumberOfCards(cards.Count);
-    }
-    public Card PlaceCard()
-    {
-        if (cards.Count == 0) return null;
-        playerPanel.ChangeNumberOfCards(cards.Count-1);
-        Card toReturn = cards[Random.Range(0, cards.Count - 1)];
-        cards.Remove(toReturn);
-        return toReturn;
-    }
-    public void AddWonCards(List<Card> wonCards)
-    {
-        playerPanel.ChangeNumberOfCards(cards.Count + wonCards.Count);
-        foreach (Card wonCard in wonCards)
+        //Runner.SetPlayerObject(Object.StateAuthority,Object);
+        //lastCardIndex = -1;
+        playerPanel=FindAnyObjectByType<GameUI>().GetPlayerPanel(Object.StateAuthority);
+        playerPanel.gameObject.SetActive(true);
+        playerPanel.player = this;
+        if (HasStateAuthority)
         {
-            cards.Add(wonCard);
+            //Debug.Log("Called");
+            playerName = FindObjectOfType<PlayersData>().playerName;
         }
     }
-    public void SetButton(bool status)
+    public void SetNumberOfCards(int numberOfCards)
     {
-        playerPanel.changePlaceButtonStatus(status);
+        playerPanel.ChangeNumberOfCards(numberOfCards);
     }
-    public void SetRank(int rank)
+    public static void OnPlayerNameChanged(Changed<Player> playerInfo)
+    {
+        playerInfo.Behaviour.playerPanel.SetName(playerInfo.Behaviour.playerName);
+    }
+    [Rpc(RpcSources.All,RpcTargets.StateAuthority)]
+    public void Rpc_SetButtonTrue(RpcInfo info=default)
+    {
+        playerPanel.changePlaceButtonStatus(true);
+    }
+    public void PlacedClicked()
+    {
+        playerPanel.changePlaceButtonStatus(false);
+        FindObjectOfType<MainGame>().Rpc_PlaceCard(Object.StateAuthority);
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void Rpc_SetRank(int rank,RpcInfo info = default)
     {
         playerPanel.SetRank(rank);
-    }
-    public void SetCardBackStatus(bool status)
-    {
-        playerPanel.SetCardBackActive(status);
-    }
-    public bool CardEnded()
-    {
-        return cards.Count == 0;
-    }
-    public string GetPlayerName()
-    {
-        return playerName;
-    }
-    public void ShuffleCard()
-    {
-        for(int i = 0; i < cards.Count / 2; i++)
-        {
-            int first = Random.Range(0, cards.Count);
-            int second = Random.Range(0, cards.Count);
-            Card firstCard = cards[first];
-            Card secondCard = cards[second];
-            cards[first] = secondCard;
-            cards[second] = firstCard;
-        }
     }
 }
