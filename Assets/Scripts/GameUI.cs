@@ -49,7 +49,11 @@ public class GameUI : MonoBehaviour
     }
     public void EndGame()
     {
-        Invoke("LoadMainMenu", 10);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+    public void EndGameImmidiate()
+    {
+        Invoke("LoadMainMenu", 0);
     }
     private void LoadMainMenu()
     {

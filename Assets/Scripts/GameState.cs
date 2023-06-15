@@ -19,7 +19,7 @@ public class GameState : NetworkBehaviour
         Rpc_PlayerJoined();
         if (gameState != GameStateEnum.Starting || numberOfPlayer>=4)
         {
-            FindObjectOfType<GameUI>().EndGame();
+            FindObjectOfType<GameUI>().EndGameImmidiate();
             return;
         }
         if (HasStateAuthority)
