@@ -4,15 +4,16 @@ using UnityEngine;
 using Fusion;
 public class Player : NetworkBehaviour
 {
-    [Networked(OnChanged = nameof(OnPlayerNameChanged))] public string playerName { get; set; }
     private PlayerPanel playerPanel;
     private NetworkedPlayers networkPlayer;
+    [Networked(OnChanged = nameof(OnPlayerNameChanged))] public string playerName { get; set; }
     public override void Spawned()
     {
-        playerPanel=FindAnyObjectByType<GameUI>().GetPlayerPanel(Object.StateAuthority);
+        GameUI gameUI = FindObjectOfType<GameUI>();
+        playerPanel=gameUI.GetPlayerPanel(Object.StateAuthority);
         playerPanel.gameObject.SetActive(true);
         playerPanel.player = this;
-        networkPlayer = FindObjectOfType<GameUI>().GetNetworkPlayer(Object.StateAuthority);
+        networkPlayer = gameUI.GetNetworkPlayer(Object.StateAuthority);
         networkPlayer.player = this;
         if (HasStateAuthority)
         {

@@ -11,10 +11,14 @@ public class PlayerPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI  rankText;
     [SerializeField] private Button PlaceButton;
     [SerializeField] private Image cardBack;
-    public Player player;
+    [HideInInspector] public Player player;
     private void Start()
     {
         PlaceButton.onClick.AddListener(PlaceButtonClicked);
+    }
+    private void PlaceButtonClicked()
+    {
+        player.PlacedClicked();
     }
     public void SetName(string playerName)
     {
@@ -42,9 +46,5 @@ public class PlayerPanel : MonoBehaviour
     public void SetPlaceButtonIntractable()
     {
         PlaceButton.interactable = true;
-    }
-    private void PlaceButtonClicked()
-    {
-        player.PlacedClicked();
     }
 }

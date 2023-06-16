@@ -50,7 +50,7 @@ public class GameUI : MonoBehaviour
     }
     public void EndGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        Invoke(nameof(LoadMainMenu), 5f);
     }
     public void EndGameImmidiate()
     {
@@ -61,7 +61,7 @@ public class GameUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
     private void Update()
-    {
+    { 
         if (Input.GetKey(KeyCode.Escape)) LoadMainMenu();
     }
     public PlayerPanel GetPlayerPanel(PlayerRef playerInstance)

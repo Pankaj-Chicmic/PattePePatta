@@ -1,53 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
-using UnityEngine.SceneManagement;
 public class MainGame : NetworkBehaviour,IPlayerLeft
 {
     [SerializeField] private Deck deck;
-    [Networked] [Capacity(52)] public NetworkArray<Card> cardsOnTable { get; }
-    [Networked] [Capacity(4)] public NetworkArray<PlayerRef> playersInstances { get; }
-    [Networked] [Capacity(4)] NetworkDictionary<PlayerRef, bool> dict { get; }
-    [Networked] public int currentPlayerIndex { get; private set; }
-    [Networked] public int totalPlayerNumber { get; private set; }
-    [Networked] public int remainingPlayers { get; private set; }
-    [Networked(OnChanged = nameof(OnCardsOnTableChanged))] public int cardsOntableNumber { get; private set; }
-    [Networked(OnChanged = nameof(OnNewCardOnTableChanged))] public Card newCardOnTable { get; private set; }
-    [Networked] public TickTimer timer { get; set; }
     private NetworkRunner networkRunner;
     private GameUI gameUI;
     private GameState gameState;
-    public override void Spawned()
-    {
-        gameUI = FindObjectOfType<GameUI>();
-        gameState = FindObjectOfType<GameState>();
-    }
-    public void StartGame()
-    {
-        networkRunner = FindObjectOfType<NetworkRunner>();
-        int index = 0;
-        foreach (PlayerRef playerInstance in Runner.ActivePlayers)
-        {
-            if (index >= 4) return;
-            totalPlayerNumber++;
-            remainingPlayers++;
-            playersInstances.Set(index, playerInstance);
-            dict.Add(playerInstance, true);
-            index++;
-        }
-        currentPlayerIndex = -1;
-        deck.DivideCards(FindObjectsOfType<Player>());
-        SetNextPlayer();
-    }
-    private void RemovePlayer(PlayerRef playerInstance)
-    {
-        if (dict.ContainsKey(playerInstance))
-        {
-            dict.Remove(playerInstance);
-            remainingPlayers--;
-        }
-    }
+    [Networked] [Capacity(52)] public NetworkArray<Card> cardsOnTable { get; }
+    [Networked] [Capacity(4)] public NetworkArray<PlayerRef> playersInstances { get; }
+    [Networked] [Capacity(4)] NetworkDictionary<PlayerRef, bool> dict { get; }
+    [Networked(OnChanged = nameof(OnNewCardOnTableChanged))] public Card newCardOnTable { get; private set; }
+    [Networked(OnChanged = nameof(OnCardsOnTableChanged))] public int cardsOntableNumber { get; private set; }
+    [Networked] public int currentPlayerIndex { get; private set; }
+    [Networked] public int totalPlayerNumber { get; private set; }
+    [Networked] public int remainingPlayers { get; private set; }
+    [Networked] public TickTimer timer { get; set; }
     private void SetNextPlayer()
     {
         if (SinglePlayerLeft())
@@ -81,6 +48,52 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
         Card card=new Card();
         card.number = -1;
         newCardOnTable = card;
+    }
+    private void RemovePlayer(PlayerRef playerInstance)
+    {
+        if (dict.ContainsKey(playerInstance))
+        {
+            dict.Remove(playerInstance);
+            remainingPlayers--;
+        }
+    }
+    public override void Spawned()
+    {
+        gameUI = FindObjectOfType<GameUI>();
+        gameState = FindObjectOfType<GameState>();
+    }
+    public override void FixedUpdateNetwork()
+    {
+        if (timer.IsRunning)
+        {
+            gameUI.SetRoundWOnByText(Runner.GetPlayerObject(playersInstances[currentPlayerIndex]).GetBehaviour<Player>().playerName);
+        }
+        if (timer.Expired(Runner))
+        {
+            gameUI.ReSetRoundWOnByText();
+            if (!HasStateAuthority) return;
+            Runner.GetPlayerObject(playersInstances[currentPlayerIndex]).GetBehaviour<Player>().PlayerWonRound(this);
+            ResetTable();
+            SetNextPlayerAfterWinning();
+            timer = default;
+        }
+    }
+    public void StartGame()
+    {
+        networkRunner = FindObjectOfType<NetworkRunner>();
+        int index = 0;
+        foreach (PlayerRef playerInstance in Runner.ActivePlayers)
+        {
+            if (index >= 4) return;
+            totalPlayerNumber++;
+            remainingPlayers++;
+            playersInstances.Set(index, playerInstance);
+            dict.Add(playerInstance, true);
+            index++;
+        }
+        currentPlayerIndex = -1;
+        deck.DivideCards(FindObjectsOfType<Player>());
+        SetNextPlayer();
     }
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_PlaceCard(PlayerRef playerinstance)
@@ -144,22 +157,6 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
             SetNextPlayer();
         }
     }
-    public override void FixedUpdateNetwork()
-    {
-        if (timer.IsRunning)
-        {
-            gameUI.SetRoundWOnByText(Runner.GetPlayerObject(playersInstances[currentPlayerIndex]).GetBehaviour<Player>().playerName);
-        }
-        if (timer.Expired(Runner))
-        {
-            gameUI.ReSetRoundWOnByText();
-            if (!HasStateAuthority) return;
-            Runner.GetPlayerObject(playersInstances[currentPlayerIndex]).GetBehaviour<Player>().PlayerWonRound(this);
-            ResetTable();
-            SetNextPlayerAfterWinning();
-            timer = default;
-        }
-    }
     private bool SinglePlayerLeft()
     {
         return remainingPlayers == 1;
@@ -176,26 +173,6 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
         }
         Rpc_ShutDownGame();
     }
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void Rpc_ShutDownGame()
-    {
-        gameUI.EndGame();
-        Runner.Shutdown();
-    }
-    public static void OnCardsOnTableChanged(Changed<MainGame> playerInfo)
-    {
-        playerInfo.Behaviour.gameUI.ChangeCardsOnTable(playerInfo.Behaviour.cardsOntableNumber);
-    }
-    public static void OnNewCardOnTableChanged(Changed<MainGame> playerInfo)
-    {
-        MainGame mainGame = playerInfo.Behaviour;
-        if (mainGame.newCardOnTable.number == -1) mainGame.gameUI.clearSprites();
-        else
-        { 
-            Sprite sprite = Deck.GetCardSprite(mainGame.newCardOnTable.typeOfCard, mainGame.newCardOnTable.number);
-            mainGame.gameUI.SetImage(sprite);
-        } 
-    }
     public void PlayerLeft(PlayerRef player)
     {
         gameUI.DisablePanel(player);
@@ -205,8 +182,27 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
             {
                 RemovePlayer(player);
                 if (playersInstances[currentPlayerIndex] == player) SetNextPlayer();
-                remainingPlayers--;
             }
         }
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_ShutDownGame()
+    {
+        gameUI.EndGame();
+        Runner.Shutdown();
+    }
+    private static void OnCardsOnTableChanged(Changed<MainGame> playerInfo)
+    {
+        playerInfo.Behaviour.gameUI.ChangeCardsOnTable(playerInfo.Behaviour.cardsOntableNumber);
+    }
+    private static void OnNewCardOnTableChanged(Changed<MainGame> playerInfo)
+    {
+        MainGame mainGame = playerInfo.Behaviour;
+        if (mainGame.newCardOnTable.number == -1) mainGame.gameUI.clearSprites();
+        else
+        { 
+            Sprite sprite = Deck.GetCardSprite(mainGame.newCardOnTable.typeOfCard, mainGame.newCardOnTable.number);
+            mainGame.gameUI.SetImage(sprite);
+        } 
     }
 }

@@ -458,6 +458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _playerCardsNumber: 0
+  _status: 0
+  _rank: 0
   player: {fileID: 0}
 --- !u!114 &206238094
 MonoBehaviour:
@@ -2514,10 +2516,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.5372549, g: 0.05882353, b: 0.05882353, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.7075472, g: 0.030037368, b: 0.030037368, a: 1}
+    m_PressedColor: {r: 0.5660378, g: 0.018689938, b: 0.018689938, a: 1}
+    m_SelectedColor: {r: 0.6132076, g: 0.043387324, b: 0.043387324, a: 1}
+    m_DisabledColor: {r: 0.28564525, g: 0.2227216, b: 0.6132076, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2648,10 +2650,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.5372549, g: 0.05882353, b: 0.05882353, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.7075472, g: 0.030037368, b: 0.030037368, a: 1}
+    m_PressedColor: {r: 0.5660378, g: 0.018689938, b: 0.018689938, a: 1}
+    m_SelectedColor: {r: 0.6132076, g: 0.043387324, b: 0.043387324, a: 1}
+    m_DisabledColor: {r: 0.28564525, g: 0.2227216, b: 0.6132076, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2767,6 +2769,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _playerCardsNumber: 0
+  _status: 0
+  _rank: 0
   player: {fileID: 0}
 --- !u!114 &1055528671
 MonoBehaviour:
@@ -3010,6 +3014,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _playerCardsNumber: 0
+  _status: 0
+  _rank: 0
   player: {fileID: 0}
 --- !u!114 &1099314991
 MonoBehaviour:
@@ -3974,10 +3980,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.5377358, g: 0.058339275, b: 0.058339275, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.7075472, g: 0.030037368, b: 0.030037368, a: 1}
+    m_PressedColor: {r: 0.5660378, g: 0.018689938, b: 0.018689938, a: 1}
+    m_SelectedColor: {r: 0.6132076, g: 0.043387324, b: 0.043387324, a: 1}
+    m_DisabledColor: {r: 0.28564525, g: 0.2227216, b: 0.6132076, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4372,6 +4378,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   _playerCardsNumber: 0
+  _status: 0
+  _rank: 0
   player: {fileID: 0}
 --- !u!114 &1636374325
 MonoBehaviour:
@@ -5488,10 +5496,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.5372549, g: 0.05882353, b: 0.05882353, a: 1}
-    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.7075472, g: 0.030037368, b: 0.030037368, a: 1}
+    m_PressedColor: {r: 0.5660378, g: 0.018689938, b: 0.018689938, a: 1}
+    m_SelectedColor: {r: 0.6132076, g: 0.043387324, b: 0.043387324, a: 1}
+    m_DisabledColor: {r: 0.28564525, g: 0.2227216, b: 0.6132076, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

@@ -4,9 +4,9 @@ using System.Linq;
 using Fusion;
 public class Deck : NetworkBehaviour
 {
-    [Networked] [Capacity(52)] NetworkArray<Card> cards { get; }
     static private Dictionary<TypeOfCard, List<Sprite>> sprites = new Dictionary<TypeOfCard, List<Sprite>>();
     private MainGame mainGame;
+    [Networked] [Capacity(52)] NetworkArray<Card> cards { get; }
     public override void Spawned()
     {
         CreateSpritesDictionary();

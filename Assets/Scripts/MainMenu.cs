@@ -3,12 +3,13 @@ using TMPro;
 using Fusion;
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] GameObject playerDataPrefab;
-    [SerializeField] GameObject networkRunnerPrefab;
-    [SerializeField] TMP_InputField playerNamesInputField;
-    [SerializeField] TMP_InputField roomNameInputField;
+    [SerializeField] private GameObject playerDataPrefab;
+    [SerializeField] private GameObject networkRunnerPrefab;
+    [SerializeField]private TMP_InputField playerNamesInputField;
+    [SerializeField] private TMP_InputField roomNameInputField;
     private NetworkRunner networkRunner;
     private PlayersData playerDataObject;
+    private StartGameResult task;
     private void Start()
     {
         playerDataObject = FindObjectOfType<PlayersData>();
@@ -43,7 +44,15 @@ public class MainMenu : MonoBehaviour
             GameMode = mode,
             SessionName = roomName,
         };
-        await networkRunner.StartGame(startGameArgs);
+        task=await networkRunner.StartGame(startGameArgs);
+        InvokeRepeating(nameof(CheckTask), 0, 0.01f);
         networkRunner.SetActiveScene(sceneName);
+    }
+    void CheckTask()
+    {
+        if (!task.Ok)
+        {
+            Debug.Log(task.ErrorMessage);
+        }
     }
 }
