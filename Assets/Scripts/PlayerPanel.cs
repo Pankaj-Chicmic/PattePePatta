@@ -48,7 +48,7 @@ public class PlayerPanel : MonoBehaviour
     {
         PlaceButton.interactable = true;
     }
-    public void SetPlayerPanelTrue()
+    public void SetPlayerLeftPanelTrue()
     {
         playerLeftImage.gameObject.SetActive(true);
     }

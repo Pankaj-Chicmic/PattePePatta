@@ -51,8 +51,10 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     }
     private void RemovePlayer(PlayerRef playerInstance)
     {
+        Debug.Log("Called to Removed Player");
         if (dict.ContainsKey(playerInstance))
         {
+            Debug.Log("Removing Player");
             dict.Remove(playerInstance);
             remainingPlayers--;
         }
@@ -108,17 +110,19 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
             cardsOntableNumber++;
             if (cardsOntableNumber > 1)
             {
-                if (card.number == cardsOnTable[cardsOntableNumber - 2].number)
+                if (card.number == cardsOnTable[cardsOntableNumber - 2].number && false)
                 {
-                    timer=TickTimer.CreateFromSeconds(Runner, 5);
+                    timer=TickTimer.CreateFromSeconds(Runner,5);
                 }
                 else
                 {
                     if (currentPlayer.IfLost(remainingPlayers))
                     {
+                        Debug.Log("Calling To Remove Player");
                         RemovePlayer(playerinstance);
                         if (SinglePlayerLeft())
                         {
+                            Debug.Log("Single Player Left Calling MatchWon()");
                             MatchWon();
                         }
                         else
@@ -163,14 +167,17 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     }
     private void MatchWon()
     {
+        Debug.Log("Called MatchWon");
         foreach(PlayerRef playerInstance in playersInstances)
         {
             if (dict.ContainsKey(playerInstance))
             {
+                Debug.Log("Found Won Player Setting It");
                 Player player = Runner.GetPlayerObject(playerInstance).GetBehaviour<Player>();
                 player.SetNetworkedRank(remainingPlayers);
             }
         }
+        Debug.Log("Calling Shutdown Rpc");
         Rpc_ShutDownGame();
     }
     public void PlayerLeft(PlayerRef player)
@@ -188,7 +195,12 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void Rpc_ShutDownGame()
     {
+        Debug.Log("Shutdown Rpc Called");
         gameUI.EndGame();
+        Invoke(nameof(ShutDownRunner),5);
+    }
+    private void ShutDownRunner()
+    {
         Runner.Shutdown();
     }
     private static void OnCardsOnTableChanged(Changed<MainGame> playerInfo)

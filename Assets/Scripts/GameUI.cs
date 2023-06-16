@@ -75,6 +75,6 @@ public class GameUI : MonoBehaviour
 
     public void DisablePanel(PlayerRef player)
     {
-        playerPanels[player].SetPlayerPanelTrue();
+        playerPanels[player].SetPlayerLeftPanelTrue();
     }
 }
