@@ -11,6 +11,7 @@ public class PlayerPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI  rankText;
     [SerializeField] private Button PlaceButton;
     [SerializeField] private Image cardBack;
+    [SerializeField] private Image playerLeftImage;
     [HideInInspector] public Player player;
     private void Start()
     {
@@ -46,5 +47,9 @@ public class PlayerPanel : MonoBehaviour
     public void SetPlaceButtonIntractable()
     {
         PlaceButton.interactable = true;
+    }
+    public void SetPlayerPanelTrue()
+    {
+        playerLeftImage.gameObject.SetActive(true);
     }
 }
