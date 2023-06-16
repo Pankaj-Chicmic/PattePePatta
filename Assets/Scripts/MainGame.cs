@@ -42,14 +42,18 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     }
     private void RemovePlayer(PlayerRef playerInstance)
     {
-        dict.Remove(playerInstance);
-        remainingPlayers--;
+        if (dict.ContainsKey(playerInstance))
+        {
+            dict.Remove(playerInstance);
+            remainingPlayers--;
+        }
     }
     private void SetNextPlayer()
     {
         if (SinglePlayerLeft())
         {
             MatchWon();
+            return;
         }
         currentPlayerIndex = (currentPlayerIndex + 1) % totalPlayerNumber;
         while (!dict.ContainsKey(playersInstances[currentPlayerIndex]))
@@ -64,6 +68,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
         if (SinglePlayerLeft())
         {
             MatchWon();
+            return;
         }
         currentPlayerIndex--;
         currentPlayerIndex = (currentPlayerIndex + 1) % totalPlayerNumber;
@@ -166,8 +171,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
             if (dict.ContainsKey(playerInstance))
             {
                 Player player = Runner.GetPlayerObject(playerInstance).GetBehaviour<Player>();
-                player.Rpc_SetRank(remainingPlayers);
-                return;
+                player.SetNetworkedRank(remainingPlayers);
             }
         }
         Rpc_ShutDownGame();
@@ -194,6 +198,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     }
     public void PlayerLeft(PlayerRef player)
     {
+        gameUI.DisablePanel(player);
         if (gameState.gameState == GameStateEnum.Running)
         {
             if (HasStateAuthority)

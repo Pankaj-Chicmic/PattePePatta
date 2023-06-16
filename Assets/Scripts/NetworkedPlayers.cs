@@ -7,6 +7,7 @@ public class NetworkedPlayers : NetworkBehaviour
     [Networked] [Capacity(52)] NetworkArray<Card> playerCards { get; }
     [Networked(OnChanged = nameof(OnCardChangedPlayer))] public int playerCardsNumber { get; private set; }
     [Networked(OnChanged = "OnButtonStatusChanged")] public int status { get; set; }
+    [Networked(OnChanged = nameof(OnRankChanged))] public int rank { get; set; }
     public Player player;
     public static void OnCardChangedPlayer(Changed<NetworkedPlayers> playerInfo)
     {
@@ -32,7 +33,7 @@ public class NetworkedPlayers : NetworkBehaviour
     {
         if (playerCardsNumber == 0)
         {
-            player.Rpc_SetRank(remainingPlayers);
+            player.SetNetworkedRank(remainingPlayers);
         }
         return playerCardsNumber==0;
     }
@@ -59,6 +60,10 @@ public class NetworkedPlayers : NetworkBehaviour
     {
         bool status = playerInfo.Behaviour.status == 1 ? true : false;
         playerInfo.Behaviour.SetButtonStatus(status);
+    }
+    private static void OnRankChanged(Changed<NetworkedPlayers> playerInfo)
+    {
+        playerInfo.Behaviour.player.SetRank(playerInfo.Behaviour.rank);
     }
     private void SetButtonStatus(bool status)
     {

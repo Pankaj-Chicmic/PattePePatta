@@ -72,4 +72,9 @@ public class GameUI : MonoBehaviour
     {
         return neworkedPlayers[playerInstance];
     }
+
+    public void DisablePanel(PlayerRef player)
+    {
+        playerPanels[player].gameObject.SetActive(false);
+    }
 }

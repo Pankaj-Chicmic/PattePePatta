@@ -31,8 +31,11 @@ public class Player : NetworkBehaviour
     {
         FindObjectOfType<MainGame>().Rpc_PlaceCard(Object.StateAuthority);
     }
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void Rpc_SetRank(int rank,RpcInfo info = default)
+    public void SetNetworkedRank(int rank)
+    {
+        networkPlayer.rank = rank;
+    }
+    public void SetRank(int rank)
     {
         playerPanel.SetRank(rank);
     }

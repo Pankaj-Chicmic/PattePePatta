@@ -16,12 +16,13 @@ public class GameState : NetworkBehaviour
     [Networked] int numberOfPlayer{get;set;}
     public override void Spawned()
     {
-        Rpc_PlayerJoined();
         if (gameState != GameStateEnum.Starting || numberOfPlayer>=4)
         {
+            Runner.Shutdown();
             FindObjectOfType<GameUI>().EndGameImmidiate();
             return;
         }
+        Rpc_PlayerJoined();
         if (HasStateAuthority)
         {
             gameState = GameStateEnum.Starting;
