@@ -10,8 +10,11 @@ public class Deck : NetworkBehaviour
     public override void Spawned()
     {
         CreateSpritesDictionary();
-        if (HasStateAuthority) CreateCards();
-        Shuffle();
+        if (HasStateAuthority)
+        {
+            CreateCards();
+            Shuffle();
+        }
     }
     private void CreateSpritesDictionary()
     {
@@ -52,14 +55,14 @@ public class Deck : NetworkBehaviour
             cards.Set(j, temp);
         }
     }
-    public void DivideCards(int totalNumberOfPlayers)
+    public void DivideCards(Player[] players)
     {
-        if (mainGame == null) mainGame = FindObjectOfType<MainGame>();
+        int totalNumberOfPlayers = players.Length;
         for (int i = 0; i < 52 && 52 - i >=totalNumberOfPlayers;)
         {
            for(int j = 0; j < totalNumberOfPlayers; j++)
            {
-                mainGame.AddCard(cards[i], j);
+                players[j].AddCard(cards[i]);
                 i++;
            }
         }

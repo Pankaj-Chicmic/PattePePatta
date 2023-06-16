@@ -5,18 +5,17 @@ using Fusion;
 public class Player : NetworkBehaviour
 {
     [Networked(OnChanged = nameof(OnPlayerNameChanged))] public string playerName { get; set; }
-    //[Networked] public int lastCardIndex { get; set; }
     private PlayerPanel playerPanel;
+    private NetworkedPlayers networkPlayer;
     public override void Spawned()
     {
-        //Runner.SetPlayerObject(Object.StateAuthority,Object);
-        //lastCardIndex = -1;
         playerPanel=FindAnyObjectByType<GameUI>().GetPlayerPanel(Object.StateAuthority);
         playerPanel.gameObject.SetActive(true);
         playerPanel.player = this;
+        networkPlayer = FindObjectOfType<GameUI>().GetNetworkPlayer(Object.StateAuthority);
+        networkPlayer.player = this;
         if (HasStateAuthority)
         {
-            //Debug.Log("Called");
             playerName = FindObjectOfType<PlayersData>().playerName;
         }
     }
@@ -28,19 +27,37 @@ public class Player : NetworkBehaviour
     {
         playerInfo.Behaviour.playerPanel.SetName(playerInfo.Behaviour.playerName);
     }
-    [Rpc(RpcSources.All,RpcTargets.StateAuthority)]
-    public void Rpc_SetButtonTrue(RpcInfo info=default)
-    {
-        playerPanel.changePlaceButtonStatus(true);
-    }
     public void PlacedClicked()
     {
-        playerPanel.changePlaceButtonStatus(false);
         FindObjectOfType<MainGame>().Rpc_PlaceCard(Object.StateAuthority);
     }
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void Rpc_SetRank(int rank,RpcInfo info = default)
     {
         playerPanel.SetRank(rank);
+    }
+    public void AddCard(Card card)
+    {
+        networkPlayer.AddCard(card);
+    }
+    public Card GetCard()
+    {
+        return networkPlayer.GetCard();
+    }
+    public bool IfLost(int remainingPlayers)
+    {
+        return networkPlayer.IfLost(remainingPlayers);
+    }
+    public void PlayerWonRound(MainGame mainGame)
+    {
+        networkPlayer.PlayerWonRound(mainGame);
+    }
+    public void SetButtonStatus(bool status)
+    {
+        playerPanel.SetButtonStatus(status, HasStateAuthority);
+    }
+    public void ChangeNetworkedStatusForButton(bool status)
+    {
+        networkPlayer.status = status ? 1 : 0;
     }
 }

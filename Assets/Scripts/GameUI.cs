@@ -9,6 +9,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundWonByText;
     [SerializeField] private TextMeshProUGUI countOfCardsOnTableText;
     [SerializeField] private List<PlayerPanel> playerPanels;
+    [SerializeField] private List<NetworkedPlayers> neworkedPlayers;
     [SerializeField] private List<Image> images;
     public void SetImage(Sprite sprite)
     {
@@ -66,5 +67,9 @@ public class GameUI : MonoBehaviour
     public PlayerPanel GetPlayerPanel(PlayerRef playerInstance)
     {
         return playerPanels[playerInstance];
+    }
+    public NetworkedPlayers GetNetworkPlayer(PlayerRef playerInstance)
+    {
+        return neworkedPlayers[playerInstance];
     }
 }

@@ -24,16 +24,14 @@ public class PlayerPanel : MonoBehaviour
     {
         numberOfCardsText.text = NumberOfCards.ToString();
     }
-    public void changePlaceButtonStatus(bool status)
+    public void SetButtonStatus(bool status,bool interactable)
     {
-        PlaceButton.interactable = status;
-        if (!status) PlaceButton.gameObject.SetActive(false);
-        else PlaceButton.gameObject.SetActive(true);
+        PlaceButton.gameObject.SetActive(status);
+        PlaceButton.interactable = interactable;
     }
     public void SetRank(int rank)
     {
         remainingCardTextGameObject.SetActive(false);
-        PlaceButton.gameObject.SetActive(false);
         rankText.text = "Rank: "+rank.ToString();
         rankText.gameObject.SetActive(true);
     }
