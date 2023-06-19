@@ -110,7 +110,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
             cardsOntableNumber++;
             if (cardsOntableNumber > 1)
             {
-                if (card.number == cardsOnTable[cardsOntableNumber - 2].number && false)
+                if (card.number == cardsOnTable[cardsOntableNumber - 2].number)
                 {
                     timer=TickTimer.CreateFromSeconds(Runner,5);
                 }
