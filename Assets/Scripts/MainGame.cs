@@ -197,7 +197,7 @@ public class MainGame : NetworkBehaviour,IPlayerLeft
     {
         Debug.Log("Shutdown Rpc Called");
         gameUI.EndGame();
-        Invoke(nameof(ShutDownRunner),5);
+        Invoke(nameof(ShutDownRunner),3);
     }
     private void ShutDownRunner()
     {

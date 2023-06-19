@@ -50,7 +50,7 @@ public class GameUI : MonoBehaviour
     }
     public void EndGame()
     {
-        Invoke(nameof(LoadMainMenu), 5f);
+        Invoke(nameof(LoadMainMenu), 7f);
     }
     public void EndGameImmidiate()
     {
